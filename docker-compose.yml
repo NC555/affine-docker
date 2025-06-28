@@ -57,8 +57,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-   environments:
-     REDIS_PASSWORD=${REDIS_PASSWORD}
     restart: unless-stopped
     networks:
       - default
