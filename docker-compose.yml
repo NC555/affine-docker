@@ -53,8 +53,8 @@ services:
   redis:
     image: redis
     container_name: affine-redis
-  healthcheck:
-    test: ['CMD', 'redis-cli', '-a', '${REDIS_PASSWORD}', '--raw', 'incr', 'ping'] 
+    healthcheck:
+      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5
