@@ -1,0 +1,46 @@
+# this compose setup uses pre installed redis, postgres services
+name: affine
+services:
+  affine:
+    image: ghcr.io/toeverything/affine-graphql:${AFFINE_REVISION:-stable}
+    container_name: affine-server
+    ports:
+      - '3010'
+    depends_on:
+      - affine_migration
+    volumes:
+      - ${UPLOAD_LOCATION}:/root/.affine/storage
+      - ${CONFIG_LOCATION}:/root/.affine/config
+    env_file:
+      - .env
+    environment:
+      - REDIS_SERVER_HOST=${REDIS_SERVER_HOST}
+      - REDIS_SERVER_PORT=${REDIS_SERVER_PORT}
+      - REDIS_SERVER_PASSWORD=${REDIS_SERVER_PASSWORD}
+      - DATABASE_URL=postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_SCHEMA}:5432/${DB_DATABASE:-affine}
+      - AFFINE_INDEXER_ENABLED=false
+    restart: unless-stopped
+    networks:
+      - ${DEFAULT_NETWORK}
+
+  affine_migration:
+    image: ghcr.io/toeverything/affine-graphql:${AFFINE_REVISION:-stable}
+    container_name: affine-migration-job
+    networks:
+      - coolify
+    volumes:
+      - ${UPLOAD_LOCATION}:/root/.affine/storage
+      - ${CONFIG_LOCATION}:/root/.affine/config
+    command: ['sh', '-c', 'node ./scripts/self-host-predeploy.js']
+    env_file:
+      - .env
+    environment:
+      - REDIS_SERVER_HOST=${REDIS_SERVER_HOST}
+      - REDIS_SERVER_PORT=${REDIS_SERVER_PORT}
+      - REDIS_SERVER_PASSWORD=${REDIS_SERVER_PASSWORD}
+      - DATABASE_URL=postgresql://${DB_USERNAME}:${DB_PASSWORD}@coolify-db:5432/${DB_DATABASE:-affine}
+      - AFFINE_INDEXER_ENABLED=false
+
+networks:
+  name: ${DEFAULT_NETWORK}
+    external: true
