@@ -14,10 +14,12 @@ services:
     env_file:
       - .env
     environment:
+      - AFFINE_SERVER_HTTPS=false
+      - AFFINE_SERVER_EXTERNAL_URL=${AFFINE_SERVER_EXTERNAL_URL}
       - REDIS_SERVER_HOST=${REDIS_SERVER_HOST}
       - REDIS_SERVER_PORT=${REDIS_SERVER_PORT}
       - REDIS_SERVER_PASSWORD=${REDIS_SERVER_PASSWORD}
-      - DATABASE_URL=postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_DATABASE:-affine}
+      - DATABASE_URL=postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE:-affine}
       - AFFINE_INDEXER_ENABLED=false
     restart: unless-stopped
     networks:
@@ -38,7 +40,7 @@ services:
       - REDIS_SERVER_HOST=${REDIS_SERVER_HOST}
       - REDIS_SERVER_PORT=${REDIS_SERVER_PORT}
       - REDIS_SERVER_PASSWORD=${REDIS_SERVER_PASSWORD}
-      - DATABASE_URL=postgresql://${DB_USERNAME}:${DB_PASSWORD}@coolify-db:5432/${DB_DATABASE:-affine}
+      - DATABASE_URL=postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE:-affine}
       - AFFINE_INDEXER_ENABLED=false
 
 networks:
