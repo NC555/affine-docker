@@ -11,8 +11,6 @@ services:
     volumes:
       - ${UPLOAD_LOCATION}:/root/.affine/storage
       - ${CONFIG_LOCATION}:/root/.affine/config
-    env_file:
-      - .env
     environment:
       - AFFINE_SERVER_HTTPS=false
       - AFFINE_SERVER_EXTERNAL_URL=${AFFINE_SERVER_EXTERNAL_URL}
@@ -34,8 +32,6 @@ services:
       - ${UPLOAD_LOCATION}:/root/.affine/storage
       - ${CONFIG_LOCATION}:/root/.affine/config
     command: ['sh', '-c', 'node ./scripts/self-host-predeploy.js']
-    env_file:
-      - .env
     environment:
       - REDIS_SERVER_HOST=${REDIS_SERVER_HOST}
       - REDIS_SERVER_PORT=${REDIS_SERVER_PORT}
