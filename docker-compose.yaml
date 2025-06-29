@@ -40,5 +40,5 @@ services:
       - AFFINE_INDEXER_ENABLED=false
 
 networks:
-  name: ${DEFAULT_NETWORK}
+  ${DEFAULT_NETWORK}
     external: true
